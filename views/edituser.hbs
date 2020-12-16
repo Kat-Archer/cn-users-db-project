@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{#each users}}
+        <form action="/edituser" method="GET" >
+            <label for="userName" >Username</label>
+            <input required type="text" name="userName" value={{this.username}}> <br />
+
+            <label for="userEmail" >email</label>
+            <input required type="email" name="userEmail" value={{this.email}}> <br />
+            
+            <label for="userPassword" >Password</label>
+            <input required type="password" name="userPassword" value={{this.pwrd}}> <br />
+
+            <button type="submit" >Update User</button>{{this.id_num}}
+        </form>
+    {{/each}}
+</body>
+</html>
