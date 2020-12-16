@@ -63,15 +63,13 @@ app.get("/allusers", (req, res) => {
     });
 });
 
-app.get("/edituser", (req, res) => { 
-    
-    let id = req.body.userId; //works if i hard code number here
-    console.log(id);
-    let pwrd = req.body.userPassword;
-    console.log(pwrd);
-    
 
-    db.query("SELECT * FROM users WHERE id_num = ?", [8],/*{ id_num: id }, */(error, results) => {
+app.get("/edituser/:id", (req, res) => { 
+    const id =  req.params.id;
+    // let id = req.body.id; //works if i hard code number here
+    console.log(id);
+     
+    db.query("SELECT * FROM users WHERE id_num = ?", [id],/*{ id_num: id }, */(error, results) => {
         console.log(results);
         if (error) {
             console.log(error)
@@ -86,6 +84,7 @@ app.get("/edituser", (req, res) => {
     
     // res.render("edituser")
 });
+
 
 // app.post("/edituser/:id_num", (req, res) => { //updates user
 //     const id =  req.params.id_num;

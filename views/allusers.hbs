@@ -9,9 +9,9 @@
     <h1> All Users </h1>
 
     {{#each users}}
-        <form action="/edituser" method="GET" > 
+        <form  method="GET" > 
             <h1>ID: {{this.id_num}} Name: {{this.username}}, email: {{this.email}}</h1>
-            <button name="userId" value={{this.id_num}} type="submit" >Update</button>{{this.id_num}}
+            <button name="userId" value={{this.id_num}} type="submit" formaction="/edituser/{{this.id_num}}" >Update</button>
             {{!-- <button type="submit" >Delete</button> --}}
         </form>
     {{/each}}
