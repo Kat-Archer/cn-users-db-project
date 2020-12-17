@@ -3,20 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comfortaa&family=Dancing+Script&family=Secular+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
 </head>
 <body>
-    <form action="/adduser" method="POST" >
-        <label for="userName" >Username</label>
-        <input required type="text" placeholder="User Name" name="userName"> <br />
+    <div id="big-daddy">
+        <h1 class="awesome-title">Add a Lucky User</h1>
+        <div id="form-container">
+            <form action="/adduser" method="POST" >
+                <table>
+                    <tr>
+                        <td><label for="userName" >Username</label></td>
+                        <td><input required type="text" placeholder="User Name" name="userName"> <br /></td>
+                    </tr>
 
-        <label for="userEmail" >email</label>
-        <input required type="email" placeholder="example@test.com" name="userEmail"> <br />
+                    <tr>
+                        <td><label for="userEmail" >email</label></td>
+                        <td><input required type="email" placeholder="example@test.com" name="userEmail"> <br /></td>
+                    </tr>
+
+                    <tr>
+                        <td><label for="userPassword" >Password</label></td>
+                        <td><input required type="password" placeholder="Password" name="userPassword"> <br /></td>
+                    </tr>
+
+                </table>
+                <button type="submit" class="top-marg">Add User</button>
+            </form>
+        </div>
         
-        <label for="userPassword" >Password</label>
-        <input required type="password" placeholder="Password" name="userPassword"> <br />
-
-        <button type="submit" >Add User</button>
-    </form>
+        <p class="top-marg">{{this.error}}</p>
+        <p class="top-marg">{{this.message}}</p>
+    </div>
+    <a href="/">Go Home</a>
 </body>
 </html>

@@ -25,6 +25,10 @@ app.use(express.json());
 
 const viewsPath = path.join(__dirname, "/views");
 
+const publicDirectory = path.join(__dirname, '/public');
+
+app.use(express.static(publicDirectory));
+
 app.set("view engine", "hbs");
 app.set("views", viewsPath);
 
@@ -42,26 +46,25 @@ app.post("/adduser", (req, res) => { //mysql injection
     let pwrd = req.body.userPassword;
 
     db.query('INSERT INTO users SET ?', { username: name, email: email, pwrd: pwrd }, (error, results) => {
-        /*if (error.errno === 1062) {
-            res.send("This is a duplicate email address");
-        } else*/ 
         if (error) {
             if (error.errno === 1062) {
-                res.send("This is a duplicate email address");
+                res.render("adduser", {
+                    error: "This is a duplicate email address"
+                })
             } else {
             console.log(error);
-            res.send("There was an error");
+            res.render("problem")
             }
         } else {
-            res.send("User has been registered");
+            res.render("adduser", {
+                message: "User has been registered"
+            })
         }
     })
 });
 
 app.get("/allusers", (req, res) => {
     db.query("SELECT * FROM users", (error, results) => {
-        // console.log(results);
-
         res.render("allusers", {
             users: results
         })
@@ -69,7 +72,7 @@ app.get("/allusers", (req, res) => {
 });
 
 
-app.post("/edituser/:id", (req, res) => { 
+app.get("/edituser/:id", (req, res) => { 
     const id =  req.params.id;
     console.log(id);
      
@@ -77,7 +80,7 @@ app.post("/edituser/:id", (req, res) => {
         console.log(results);
         if (error) {
             console.log(error)
-            res.send("it's gone wrong")
+            res.render("problem")
         } else {
             res.render("edituser", {
                 users: results
@@ -98,21 +101,39 @@ app.post("/edituser/:id", (req, res) => { //updates user
 
     db.query(query, user, (error, results) => { //use variable to stop it being really long & difficult to read
         if (error) {
+            if (error.errno === 1062) {
+                db.query("SELECT * FROM users WHERE id_num = ?", [id], (error, results) => {
+                    console.log(results);
+                    if (error) {
+                        console.log(error)
+                        res.render("problem")
+                    } else {
+                        res.render("edituser", {
+                            users: results,
+                            error: "This is a duplicate email address"
+                        })
+                    }
+                    
+                }); 
+            } else {
             console.log(error);
-            res.send("There was an error");
+            res.render("problem")
+            }
         } else {
-            res.send("User has been updated"); 
+            res.render("edituser", {
+                message1: "User has been updated"
+            })
         }
     }); 
 
+
 });
 
-app.post("/deleteuser/:id", (req, res) => { //updates user
+app.get("/deleteuser/:id", (req, res) => { //updates user
     const id =  req.params.id;
     console.log(id);
 
     db.query("SELECT * FROM users WHERE id_num = ?", [id], (error, results) => {
-        // console.log(results);
 
         res.render("deleteuser", {
             users: results
@@ -122,7 +143,7 @@ app.post("/deleteuser/:id", (req, res) => { //updates user
     db.query("DELETE FROM users WHERE id_num = ?", [id], (error, results) => {
         if (error) {
             console.log(error);
-            res.send("There was an error deleting the user")}
+            res.render("problem")}
     }); 
 
 });

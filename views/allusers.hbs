@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comfortaa&family=Dancing+Script&family=Secular+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>MADE</title>
 </head>
 <body>
     <h1> All Users </h1>
 
-    {{#each users}}
-        <form  method="POST" > 
-            <h1>ID: {{this.id_num}} Name: {{this.username}}, email: {{this.email}}</h1>
-            <button name="userId" value={{this.id_num}} type="submit" formaction="/edituser/{{this.id_num}}" >Update</button>
-            <button name="deleteuser" value={{this.id_num}} type="submit" formaction="/deleteuser/{{this.id_num}}" >Delete</button>
-        </form>
-    {{/each}}
+        <div id="table-container">
+            <table style="width:100%" id="table">
+                <tr id="table-titles">
+                    <th class="got-style">id</th>
+                    <th class="got-style">Name</th>
+                    <th class="got-style">email</th>
+                    <th class="got-style"></th>
+                    <th class="got-style"></th>
+                </tr>
 
-    <script src="./js/main.js" ></script>
+            {{#each users}}
+            <form  method="GET" > 
+                <tr id="table-data">
+                    <td class="got-style">{{this.id_num}}</td>
+                    <td class="got-style">{{this.username}}</td>
+                    <td class="got-style">{{this.email}}</td>
+                    <td class="got-style"><button name="userId" value={{this.id_num}} type="submit" formaction="/edituser/{{this.id_num}}" >Update</button></td>
+                    <td class="got-style"><button name="deleteuser" value={{this.id_num}} type="submit" formaction="/deleteuser/{{this.id_num}}" >Delete</button></td>
+                </tr>
+            {{/each}}
+            </table>
+            </form>
+        </div>
+    <a class="top-marg" href="/">Go Home</a>
+
 </body>
 </html>

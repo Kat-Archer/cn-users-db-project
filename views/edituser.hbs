@@ -3,22 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comfortaa&family=Dancing+Script&family=Secular+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>MADE</title>
 </head>
 <body>
-    {{#each users}}
-        <form method="POST" >
-            <label for="userName" >Username</label>
-            <input required type="text" name="userName" value={{this.username}}> <br />
+    <div id="big-daddy">
+        <h1>Edit Away</h1>
+        <div id="form-container">
+            {{#each users}}
+                <form method="POST" >
+                    <table>
+                            <tr>
+                                <td><label for="userName" >Username</label></td>
+                                <td><input required type="text" name="userName" value={{this.username}}> <br /></td>
+                            </tr>
 
-            <label for="userEmail" >email</label>
-            <input required type="email" name="userEmail" value={{this.email}}> <br />
-            
-            <label for="userPassword" >Password</label>
-            <input required type="password" name="userPassword" value={{this.pwrd}}> <br />
+                            <tr>
+                                <td><label for="userEmail" >email</label></td>
+                                <td><input required type="email" name="userEmail" value={{this.email}}> <br /></td>
+                            </tr>
 
-            <button type="submit" formaction="/edituser/{{this.id_num}}" >Update User</button>
-        </form>
-    {{/each}}
+                            <tr>
+                                <td><label for="userPassword" >Password</label></td>
+                                <td><input required type="password" name="userPassword" value={{this.pwrd}}> <br /></td>
+                            </tr>
+
+                        </table>
+
+                    <button class="top-marg" type="submit" formaction="/edituser/{{this.id_num}}" >Update User</button>
+                </form>
+            {{/each}}
+        </div>
+        <p class="top-marg">{{this.error}}</p>
+        <p class="top-marg">{{this.message1}}</p>
+    </div>
+    <a class="top-marg" href="/">Go Home</a>
 </body>
 </html>
