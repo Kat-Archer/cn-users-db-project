@@ -42,11 +42,16 @@ app.post("/adduser", (req, res) => { //mysql injection
     let pwrd = req.body.userPassword;
 
     db.query('INSERT INTO users SET ?', { username: name, email: email, pwrd: pwrd }, (error, results) => {
-        if (error.errno === 1062) {
+        /*if (error.errno === 1062) {
             res.send("This is a duplicate email address");
-        } else if (error) {
-            // console.log(error);
+        } else*/ 
+        if (error) {
+            if (error.errno === 1062) {
+                res.send("This is a duplicate email address");
+            } else {
+            console.log(error);
             res.send("There was an error");
+            }
         } else {
             res.send("User has been registered");
         }
@@ -64,12 +69,11 @@ app.get("/allusers", (req, res) => {
 });
 
 
-app.get("/edituser/:id", (req, res) => { 
+app.post("/edituser/:id", (req, res) => { 
     const id =  req.params.id;
-    // let id = req.body.id; //works if i hard code number here
     console.log(id);
      
-    db.query("SELECT * FROM users WHERE id_num = ?", [id],/*{ id_num: id }, */(error, results) => {
+    db.query("SELECT * FROM users WHERE id_num = ?", [id], (error, results) => {
         console.log(results);
         if (error) {
             console.log(error)
@@ -81,77 +85,51 @@ app.get("/edituser/:id", (req, res) => {
         }
         
     }); 
-    
-    // res.render("edituser")
 });
 
+app.post("/edituser/:id", (req, res) => { //updates user
+    const id =  req.params.id;
+    let name = req.body.userName;
+    let email = req.body.userEmail;
+    let pwrd = req.body.userPassword;
 
-// app.post("/edituser/:id_num", (req, res) => { //updates user
-//     const id =  req.params.id_num;
-//     let name = req.body.userName;
-//     let email = req.body.userEmail;
-//     let pwrd = req.body.userPassword;
+    const query = "UPDATE users SET username = ?, email = ?, pwrd = ? WHERE id_num = ?"; // ?=positional parameters
+    const user = [name, email, pwrd, id];
 
-//     const query = "UPDATE users SET name = ?, email = ?, pwrd = ? WHERE id = ?"; // ?=positional parameters
-//     const user = [name, email, pwrd, id];
+    db.query(query, user, (error, results) => { //use variable to stop it being really long & difficult to read
+        if (error) {
+            console.log(error);
+            res.send("There was an error");
+        } else {
+            res.send("User has been updated"); 
+        }
+    }); 
 
-//     db.query(query, user, (error, results) => { //use variable to stop it being really long & difficult to read
-//         if (error) {
-//             res.send("There was an error");
-//         } else {
-//             res.send("User has been updated"); 
-//         }
-//     }); 
+});
 
-// });
+app.post("/deleteuser/:id", (req, res) => { //updates user
+    const id =  req.params.id;
+    console.log(id);
 
-// app.get("/update", (req, res) => {
-//     res.render("update");
-// });
+    db.query("SELECT * FROM users WHERE id_num = ?", [id], (error, results) => {
+        // console.log(results);
 
-// app.post("/update/:userID", (req, res) => { //user ID is a variable the colon represents a url parameter
-//     console.log(req.params.userID); // lets you grab the variable
+        res.render("deleteuser", {
+            users: results
+        })
+    });
 
-//     // pulling data from form
-//     const name = req.body.userName;
-//     const age = req.body.userAge;
-//     const location = req.body.userLocation;
-//     const job = req.body.userJob;
+    db.query("DELETE FROM users WHERE id_num = ?", [id], (error, results) => {
+        if (error) {
+            console.log(error);
+            res.send("There was an error deleting the user")}
+    }); 
 
-//     const id =  req.params.userID;
-
-//     const query = "UPDATE users SET name = ?, age = ?, location = ?, job = ? WHERE id = ?"; // ?=positional parameters
-//     const user = [name, age, location, job, id];
-
-//     db.query(query, user, (error, results) => { //use variable to stop it being really long & difficult to read
-//         if (error) {
-//             res.send("There was an error");
-//         } else {
-//             res.send("User has been updated"); 
-//         }
-//     }); 
-
-
-// });
-
-// app.get("/delete", (req, res) => {
-//     res.render("deleteUser");
-// })
-
-// app.post("/delete/:userID", (req, res) => {
-//     const id =  req.params.userID;
-
-//     let query = "DELETE FROM users WHERE id = ?"; //delete query
-//     let user = [id]; //the item you want to pass
-
-//     db.query(query, user, (error, results) => {
-//         if (error) {
-//             res.send("There was an error deleting the user");
-//         } else {
-//             res.send("User has been deleted"); 
-//         }
-//     });
-// })
+});
+ 
+app.get("*", (req, res) => {
+    res.render("error");
+})
 
 app.listen(5000, () => {
     console.log("Server started on Port 5000");

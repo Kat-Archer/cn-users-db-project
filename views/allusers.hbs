@@ -9,10 +9,10 @@
     <h1> All Users </h1>
 
     {{#each users}}
-        <form  method="GET" > 
+        <form  method="POST" > 
             <h1>ID: {{this.id_num}} Name: {{this.username}}, email: {{this.email}}</h1>
             <button name="userId" value={{this.id_num}} type="submit" formaction="/edituser/{{this.id_num}}" >Update</button>
-            {{!-- <button type="submit" >Delete</button> --}}
+            <button name="deleteuser" value={{this.id_num}} type="submit" formaction="/deleteuser/{{this.id_num}}" >Delete</button>
         </form>
     {{/each}}
 

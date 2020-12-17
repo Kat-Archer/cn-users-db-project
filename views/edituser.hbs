@@ -7,7 +7,7 @@
 </head>
 <body>
     {{#each users}}
-        <form action="/edituser" method="GET" >
+        <form method="POST" >
             <label for="userName" >Username</label>
             <input required type="text" name="userName" value={{this.username}}> <br />
 
@@ -17,7 +17,7 @@
             <label for="userPassword" >Password</label>
             <input required type="password" name="userPassword" value={{this.pwrd}}> <br />
 
-            <button type="submit" >Update User</button>
+            <button type="submit" formaction="/edituser/{{this.id_num}}" >Update User</button>
         </form>
     {{/each}}
 </body>
